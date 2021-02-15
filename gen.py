@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+
 # gen.py
 # Diceware password generator.
 #
@@ -24,16 +27,36 @@
 # Deepraj Pandey
 # 14 Feb, 2021
 
+import os
+
 from collections import OrderedDict
+from platform import system
 from pyperclip import copy, paste
 from secrets import randbelow
 from shlex import quote
 from subprocess import Popen
-from time import sleep
+
+
+def windowsss():
+    """Opinionated exit sequence for Windows"""
+    print("We noticed you are on Windows 🤮. ", end='')
+    print("Please switch to something more decent. :p")
+    print(
+        "⚠️\ Your password will be on the clipboard until you clear it manually!")
+    raise SystemExit(1)
+
+
+def unsupported():
+    """Exit sequence on unsupported platforms"""
+    print("Platform not supported for autoclearing clipboard.")
+    print(
+        "⚠️\ Your password will be on the clipboard until you clear it manually!")
+    raise SystemExit(1)
+
 
 # Take length of password to be generated (phrase_len)
 # TODO: set up argparse with flags and help menu
-phrase_len = 5
+phrase_len = 6
 clipboard_timeout = 5  # time to wait in seconds before clearing clipboard
 
 # Roll dice 5x and generate index code - `phrase_len` times
@@ -72,7 +95,19 @@ copy("-".join([search_space[id] for id in search_space]))
 # Since there is no copy of the password, we check for number of '-'
 if paste().count('-') == phrase_len - 1:
     # TODO: check host OS and use respective clipboard command
-    # TODO: bash windows users
-    cmd = "sleep {} && pbcopy < /dev/null".format(
+    cmd = "sleep {} && ".format(
         quote(str(clipboard_timeout)))
+    if system() == 'Darwin' or os.name == 'mac':
+        cmd += "pbcopy < /dev/null"
+    elif system() == 'Linux' and os.path.isfile('/proc/version'):
+        # handle WSL
+        with open('/proc/version', 'r') as f:
+            if "microsoft" in f.read().lower():
+                windowsss()  # quit!
+        cmd += "xclip -selection c < /dev/null"
+    else:
+        if system() == 'Windows' or os.name == 'nt':
+            windowsss()  # quit!
+        else:
+            unsupported()
     Popen(cmd, shell=True, start_new_session=True)
