@@ -4,8 +4,11 @@
 # Deepraj Pandey
 # 14 Feb, 2021
 
-from secrets import randbelow
 from collections import OrderedDict
+from pyperclip import copy, paste
+from secrets import randbelow
+from subprocess import run
+from time import sleep
 
 # Take length of password to be generated (phrase_len)
 # TODO: set up argparse with flags and help menu
@@ -39,8 +42,13 @@ with open(filename, 'r') as f:
             # indices is sorted, so continuing from next line works
             indices.pop(0)
 
-# Generate passphrase
-print("-".join([search_space[id] for id in search_space]))
+# Copy passphrase to clipboard
+copy("-".join([search_space[id] for id in search_space]))
 
-# Print passphrase
-# TODO: better way? copy to clipboard automatically?
+# Clear clipboard (on MacOS) if it still has the passphrase
+# 5 seconds afer pasting
+sleep(5)
+# Since there is no copy of the password, we check for number of '-'
+if paste().count('-') == phrase_len - 1:
+    with open("/dev/null", 'r') as nulltext:
+        run("pbcopy", stdin=nulltext)
