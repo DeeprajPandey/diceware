@@ -1,6 +1,9 @@
 # gen.py
 # Diceware password generator.
 #
+# Uses pyperclip for adding the password to the clipboard which
+# depends on xclip on linux (https://pypi.org/project/pyperclip/).
+#
 # Deepraj Pandey
 # 14 Feb, 2021
 
@@ -13,6 +16,7 @@ from time import sleep
 # Take length of password to be generated (phrase_len)
 # TODO: set up argparse with flags and help menu
 phrase_len = 5
+clipboard_timeout = 5  # time to wait in seconds before clearing clipboard
 
 # Roll dice 5x and generate index code - `phrase_len` times
 # randbelow(n) [0,n), hence +1. We need 5 random numbers joined to
@@ -46,9 +50,12 @@ with open(filename, 'r') as f:
 copy("-".join([search_space[id] for id in search_space]))
 
 # Clear clipboard (on MacOS) if it still has the passphrase
-# 5 seconds afer pasting
-sleep(5)
+# `clipboard_timeout` seconds afer pasting.
+# TODO: create child process for the following and exit
+sleep(clipboard_timeout)
 # Since there is no copy of the password, we check for number of '-'
 if paste().count('-') == phrase_len - 1:
     with open("/dev/null", 'r') as nulltext:
+        # TODO: check host OS and use respective clipboard command
+        # TODO: bash windows users
         run("pbcopy", stdin=nulltext)
