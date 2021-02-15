@@ -2,7 +2,11 @@
 # -*- coding: utf-8 -*-
 
 # gen.py
-# Diceware password generator.
+# Diceware passphrase generator.
+# More info: https://www.eff.org/dice
+# Note: This uses secrets, has protection against shell injection attacks,
+# and I have tried to keep things as secure as possible however the best way to
+# generate diceware passphrases is by hand as specified on the page above.
 #
 # Uses pyperclip for adding the password to the clipboard which
 # depends on xclip on linux (https://pypi.org/project/pyperclip/).
@@ -94,7 +98,6 @@ copy("-".join([search_space[id] for id in search_space]))
 # `clipboard_timeout` seconds afer pasting.
 # Since there is no copy of the password, we check for number of '-'
 if paste().count('-') == phrase_len - 1:
-    # TODO: check host OS and use respective clipboard command
     cmd = "sleep {} && ".format(
         quote(str(clipboard_timeout)))
     if system() == 'Darwin' or os.name == 'mac':
