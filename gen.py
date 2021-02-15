@@ -72,7 +72,4 @@ copy("-".join([search_space[id] for id in search_space]))
 sleep(clipboard_timeout)
 # Since there is no copy of the password, we check for number of '-'
 if paste().count('-') == phrase_len - 1:
-    with open("/dev/null", 'r') as nulltext:
-        # TODO: check host OS and use respective clipboard command
-        # TODO: bash windows users
-        run("pbcopy", stdin=nulltext)
+    copy('')
