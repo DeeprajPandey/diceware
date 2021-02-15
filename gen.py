@@ -4,6 +4,23 @@
 # Uses pyperclip for adding the password to the clipboard which
 # depends on xclip on linux (https://pypi.org/project/pyperclip/).
 #
+# ----
+# Security Note from pyperclip's source code
+# (https://github.com/asweigart/pyperclip/blob/master/src/pyperclip/__init__.py)
+# This module (pyperclip) runs programs with these names:
+#     - which
+#     - where
+#     - pbcopy
+#     - pbpaste
+#     - xclip
+#     - xsel
+#     - wl-copy/wl-paste
+#     - klipper
+#     - qdbus
+# A malicious user could rename or add programs with these names, tricking
+# Pyperclip into running them with whatever permissions the Python process has.
+# ----
+#
 # Deepraj Pandey
 # 14 Feb, 2021
 
