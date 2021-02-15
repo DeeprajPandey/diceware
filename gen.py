@@ -27,6 +27,7 @@
 from collections import OrderedDict
 from pyperclip import copy, paste
 from secrets import randbelow
+from shlex import quote
 from subprocess import Popen
 from time import sleep
 
@@ -68,11 +69,10 @@ copy("-".join([search_space[id] for id in search_space]))
 
 # Clear clipboard (on MacOS) if it still has the passphrase
 # `clipboard_timeout` seconds afer pasting.
-# TODO: create child process for the following and exit
-# sleep(clipboard_timeout)
 # Since there is no copy of the password, we check for number of '-'
 if paste().count('-') == phrase_len - 1:
     # TODO: check host OS and use respective clipboard command
     # TODO: bash windows users
-    cmd = 'sleep 5 && pbcopy < /dev/null'
+    cmd = "sleep {} && pbcopy < /dev/null".format(
+        quote(str(clipboard_timeout)))
     Popen(cmd, shell=True, start_new_session=True)
