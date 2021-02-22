@@ -61,7 +61,7 @@ def unsupported():
 # Take length of password to be generated (phrase_len)
 # TODO: set up argparse with flags and help menu
 phrase_len = 6
-clipboard_timeout = 5  # time to wait in seconds before clearing clipboard
+clipboard_timeout = 15  # time to wait in seconds before clearing clipboard
 
 # Roll dice 5x and generate index code - `phrase_len` times
 # randbelow(n) [0,n), hence +1. We need 5 random numbers joined to

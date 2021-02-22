@@ -1,0 +1,14 @@
+cffi==1.14.5
+configobj==5.0.6
+cryptography==3.4.5
+future==0.18.2
+pyasn1==0.4.8
+pyasn1-modules==0.2.8
+pycparser==2.20
+pyOpenSSL==20.0.1
+pyperclip==1.8.1
+python-gnupg==0.4.6
+python-ldap==3.3.1
+secrets==1.0.2
+six==1.15.0
+systematic==4.8.7
